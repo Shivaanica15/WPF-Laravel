@@ -7,19 +7,30 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid Background="White">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
-            <TextBlock
-                Margin="0 0 0 16"
-                HorizontalAlignment="Center"
-                FontSize="28"
-                FontWeight="SemiBold"
-                Text="{Binding SuccessMessage}" />
-            <Button
-                Content="Logout"
-                FontSize="20"
-                Height="45"
-                Command="{Binding LogoutCommand}" />
-        </StackPanel>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush
+                ImageSource="/Resources/login-background.jpg"
+                Opacity="0.5"
+                Stretch="UniformToFill" />
+        </Grid.Background>
+        <Border
+            Margin="25"
+            Background="#B3FFFFFF"
+            CornerRadius="12">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
+                <TextBlock
+                    Margin="0 0 0 16"
+                    HorizontalAlignment="Center"
+                    FontSize="28"
+                    FontWeight="SemiBold"
+                    Text="{Binding SuccessMessage}" />
+                <Button
+                    Content="Logout"
+                    FontSize="20"
+                    Height="45"
+                    Command="{Binding LogoutCommand}" />
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
