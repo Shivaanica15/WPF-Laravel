@@ -13,16 +13,13 @@ namespace SimpleTrader.WPF.ViewModels
 
         public MainViewModel(
             INavigator navigator,
-            IAuthenticator authenticator,
-            ViewModelDelegateRenavigator<LoginViewModel> initialViewRenavigator)
+            IAuthenticator authenticator)
         {
             _navigator = navigator;
             _authenticator = authenticator;
 
             _navigator.StateChanged += Navigator_StateChanged;
             _authenticator.StateChanged += Authenticator_StateChanged;
-
-            initialViewRenavigator.Renavigate();
         }
 
         private void Navigator_StateChanged()

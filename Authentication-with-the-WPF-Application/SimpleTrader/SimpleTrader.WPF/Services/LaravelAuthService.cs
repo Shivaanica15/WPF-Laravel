@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SimpleTrader.WPF.Services
@@ -66,7 +67,7 @@ namespace SimpleTrader.WPF.Services
             {
                 AuthSuccessDto success = JsonSerializer.Deserialize<AuthSuccessDto>(responseBody, SerializerOptions);
 
-                if (success?.Tokens == null)
+                if (success?.Tokens == null || string.IsNullOrWhiteSpace(success.Tokens.AccessToken))
                 {
                     return LaravelAuthResult.Fail("Authentication service returned an unexpected response.");
                 }
@@ -79,7 +80,16 @@ namespace SimpleTrader.WPF.Services
                     ExpiresIn = success.Tokens.ExpiresIn
                 };
 
-                return LaravelAuthResult.Success(successMessage, tokens);
+                var user = success.User == null
+                    ? null
+                    : new LaravelAuthUser
+                    {
+                        Id = success.User.Id,
+                        Name = success.User.Name,
+                        Email = success.User.Email
+                    };
+
+                return LaravelAuthResult.Success(successMessage, tokens, user);
             }
 
             string errorMessage = TryParseErrors(responseBody) ??
@@ -134,15 +144,38 @@ namespace SimpleTrader.WPF.Services
 
         private sealed class AuthSuccessDto
         {
+            [JsonPropertyName("user")]
+            public UserDto User { get; set; }
+
+            [JsonPropertyName("tokens")]
             public AuthTokensDto Tokens { get; set; }
         }
 
         private sealed class AuthTokensDto
         {
+            [JsonPropertyName("token_type")]
             public string TokenType { get; set; }
+
+            [JsonPropertyName("expires_in")]
             public int ExpiresIn { get; set; }
+
+            [JsonPropertyName("access_token")]
             public string AccessToken { get; set; }
+
+            [JsonPropertyName("refresh_token")]
             public string RefreshToken { get; set; }
+        }
+
+        private sealed class UserDto
+        {
+            [JsonPropertyName("id")]
+            public int Id { get; set; }
+
+            [JsonPropertyName("name")]
+            public string Name { get; set; }
+
+            [JsonPropertyName("email")]
+            public string Email { get; set; }
         }
 
         private sealed class ErrorResponseDto
@@ -154,22 +187,24 @@ namespace SimpleTrader.WPF.Services
 
     public class LaravelAuthResult
     {
-        private LaravelAuthResult(bool isSuccess, string message, LaravelAuthTokens tokens)
+        private LaravelAuthResult(bool isSuccess, string message, LaravelAuthTokens tokens, LaravelAuthUser user)
         {
             IsSuccess = isSuccess;
             Message = message;
             Tokens = tokens;
+            User = user;
         }
 
         public bool IsSuccess { get; }
         public string Message { get; }
         public LaravelAuthTokens Tokens { get; }
+        public LaravelAuthUser User { get; }
 
-        public static LaravelAuthResult Success(string message, LaravelAuthTokens tokens) =>
-            new LaravelAuthResult(true, message, tokens);
+        public static LaravelAuthResult Success(string message, LaravelAuthTokens tokens, LaravelAuthUser user) =>
+            new LaravelAuthResult(true, message, tokens, user);
 
         public static LaravelAuthResult Fail(string message) =>
-            new LaravelAuthResult(false, message, null);
+            new LaravelAuthResult(false, message, null, null);
     }
 
     public class LaravelAuthTokens
@@ -179,4 +214,14 @@ namespace SimpleTrader.WPF.Services
         public string TokenType { get; set; }
         public int ExpiresIn { get; set; }
     }
+
+    public class LaravelAuthUser
+    {
+        public int? Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+    }
 }
+
+
+
