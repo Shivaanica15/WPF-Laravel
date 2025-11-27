@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SimpleTrader.WPF.Commands;
 using SimpleTrader.WPF.State.Navigators;
 using SimpleTrader.WPF.ViewModels;
 using System;
@@ -18,6 +19,8 @@ namespace SimpleTrader.WPF.HostBuilders
                 services.AddTransient<HomeViewModel>();
                 services.AddTransient<RegisterViewModel>();
                 services.AddSingleton<MainViewModel>();
+
+                services.AddTransient<LogoutCommand>();
 
                 services.AddSingleton<Func<LoginViewModel>>(serviceProvider => () => serviceProvider.GetRequiredService<LoginViewModel>());
                 services.AddSingleton<Func<HomeViewModel>>(serviceProvider => () => serviceProvider.GetRequiredService<HomeViewModel>());

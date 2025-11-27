@@ -6,38 +6,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontSize="24"
     mc:Ignorable="d">
-    <UserControl.Background>
-        <ImageBrush
-            ImageSource="/Resources/login-background.jpg"
-            Opacity="0.3"
-            Stretch="UniformToFill" />
-    </UserControl.Background>
-    <Border
-        Margin="25"
-        Padding="50"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        Background="White"
-        BorderBrush="{StaticResource BrushPrimary2}"
-        BorderThickness="3"
-        CornerRadius="10">
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="10" Color="Gray" />
-        </Border.Effect>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid Background="White">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
             <TextBlock
+                Margin="0 0 0 16"
                 HorizontalAlignment="Center"
-                FontSize="48"
-                FontWeight="Bold"
-                Text="Home" />
-            <TextBlock
-                Margin="0 20 0 0"
-                HorizontalAlignment="Center"
-                FontSize="24"
-                Foreground="Green"
+                FontSize="28"
+                FontWeight="SemiBold"
                 Text="{Binding SuccessMessage}" />
+            <Button
+                Content="Logout"
+                FontSize="20"
+                Height="45"
+                Command="{Binding LogoutCommand}" />
         </StackPanel>
-    </Border>
+    </Grid>
 </UserControl>

@@ -1,10 +1,12 @@
+using SimpleTrader.WPF.Commands;
 using SimpleTrader.WPF.State.Messages;
+using System.Windows.Input;
 
 namespace SimpleTrader.WPF.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
-        public const string DefaultSuccessMessage = "Login successful! Welcome to the Simple Trader home page.";
+        public const string DefaultSuccessMessage = "Welcome!";
 
         private string _successMessage;
 
@@ -23,11 +25,14 @@ namespace SimpleTrader.WPF.ViewModels
             }
         }
 
-        public HomeViewModel(SuccessMessageStore successMessageStore)
+        public ICommand LogoutCommand { get; }
+
+        public HomeViewModel(SuccessMessageStore successMessageStore, LogoutCommand logoutCommand)
         {
             SuccessMessage = string.IsNullOrWhiteSpace(successMessageStore?.Message)
                 ? DefaultSuccessMessage
                 : successMessageStore.Message;
+            LogoutCommand = logoutCommand;
         }
     }
 }

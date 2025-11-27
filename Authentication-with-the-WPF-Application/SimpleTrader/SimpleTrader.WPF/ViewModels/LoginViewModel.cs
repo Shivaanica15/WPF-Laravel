@@ -8,6 +8,8 @@ namespace SimpleTrader.WPF.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
+        private readonly SuccessMessageStore _successMessageStore;
+
         private string _email = string.Empty;
         public string Email
         {
@@ -56,11 +58,14 @@ namespace SimpleTrader.WPF.ViewModels
             ViewModelDelegateRenavigator<HomeViewModel> homeRenavigator,
             SuccessMessageStore successMessageStore)
         {
+            _successMessageStore = successMessageStore;
             ErrorMessageViewModel = new MessageViewModel();
             StatusMessageViewModel = new MessageViewModel();
 
             LoginCommand = new LoginCommand(this, authenticator, successMessageStore, homeRenavigator);
             NavigateRegisterCommand = new RenavigateCommand(registerRenavigator);
+
+            LoadPersistedStatusMessage();
         }
 
         public override void Dispose()
@@ -68,6 +73,17 @@ namespace SimpleTrader.WPF.ViewModels
             ErrorMessageViewModel.Dispose();
             StatusMessageViewModel.Dispose();
             base.Dispose();
+        }
+
+        private void LoadPersistedStatusMessage()
+        {
+            if (string.IsNullOrWhiteSpace(_successMessageStore?.Message))
+            {
+                return;
+            }
+
+            StatusMessage = _successMessageStore.Message;
+            _successMessageStore.Message = string.Empty;
         }
     }
 }
