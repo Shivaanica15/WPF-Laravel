@@ -1,0 +1,43 @@
+<UserControl
+    x:Class="SimpleTrader.WPF.Views.HomeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontSize="24"
+    mc:Ignorable="d">
+    <UserControl.Background>
+        <ImageBrush
+            ImageSource="/Resources/login-background.jpg"
+            Opacity="0.3"
+            Stretch="UniformToFill" />
+    </UserControl.Background>
+    <Border
+        Margin="25"
+        Padding="50"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Background="White"
+        BorderBrush="{StaticResource BrushPrimary2}"
+        BorderThickness="3"
+        CornerRadius="10">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" Color="Gray" />
+        </Border.Effect>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="48"
+                FontWeight="Bold"
+                Text="Home" />
+            <TextBlock
+                Margin="0 20 0 0"
+                HorizontalAlignment="Center"
+                FontSize="24"
+                Foreground="Green"
+                Text="{Binding SuccessMessage}" />
+        </StackPanel>
+    </Border>
+</UserControl>
